@@ -4,7 +4,7 @@
 
 # Step 1:
 # Build image and add a descriptive tag
-docker build -t udacity .
+docker build -t coffeeshopbackend .
 
 
 # Step 2: 
@@ -14,4 +14,4 @@ docker image ls
 
 # Step 3: 
 # Run flask app
-docker run -p 80:80 udacity
+docker run -p 5000:5000 coffeeshopbackend

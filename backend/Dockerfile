@@ -11,8 +11,9 @@ COPY .  /app/
 RUN pip install --upgrade --no-cache-dir pip &&\
     pip install --no-cache-dir --trusted-host  pypi.python.org -r requirements.txt
 
-# Expose port 80
-EXPOSE 80
+# Expose port 5000
+EXPOSE 5000
 
 # Run app.py at container launch
+WORKDIR src
 CMD ["python", "app.py"]

@@ -1,0 +1,26 @@
+[
+    {
+      "ParameterKey": "EnvironmentName",
+      "ParameterValue": "CoffeeshopInfra"
+    },
+    {
+      "ParameterKey": "KeyPairName",
+      "ParameterValue": "aws-linux"
+    },
+    {
+      "ParameterKey": "DesiredInstances",
+      "ParameterValue": "3"
+    },
+    {
+      "ParameterKey": "ImageID",
+      "ParameterValue": "ami-0fc034e51e520af83"
+    },
+    {
+      "ParameterKey": "MinSize",
+      "ParameterValue": "1"
+    },
+    {
+      "ParameterKey": "MaxSize",
+      "ParameterValue": "5"
+    }
+  ]

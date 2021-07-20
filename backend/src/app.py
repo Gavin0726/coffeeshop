@@ -240,3 +240,7 @@ def auth_error(ex):
     "error": ex.status_code,
     "message": ex.error['code']
     }),  ex.status_code
+
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000, debug=True) # specify port=5000
