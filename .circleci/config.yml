@@ -41,7 +41,7 @@ jobs:
           cd backend
           docker build -t coffeeshopbackend .
           docker image tag coffeeshopbackend:latest lnguoxun/coffeeshopbackend:coffeeshopbackend_v1.1
-          echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME — password-stdin
+          docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
           docker push lnguoxun/coffeeshopbackend:coffeeshopbackend_v1.1
 
   build-frontend:
@@ -51,7 +51,7 @@ jobs:
       - run: |
           cd frontend
           docker build -t coffeeshopfrontend .
-          echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME — password-stdin
+          docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
           docker image tag coffeeshopfrontend:latest lnguoxun/coffeeshopfrontend:coffeeshopfrontend_v2.3
           docker push lnguoxun/coffeeshopfrontend:coffeeshopfrontend_v2.3
 
@@ -129,6 +129,6 @@ jobs:
 workflows:
   default:
     jobs:
-      - build-backend
+      - deploy-backend-EKS
      
  
