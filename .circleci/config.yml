@@ -67,13 +67,6 @@ jobs:
             chmod +x ./kubectl
             mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
             kubectl version --short --client
-      
-      - run:
-          name: Build and Push image to repo  
-          command: |
-              cd backend
-              sh run_docker.sh
-              sh upload_docker.sh
 
       - run: 
           name: Deploy
