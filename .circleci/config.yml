@@ -40,7 +40,7 @@ jobs:
       - run: |
           cd backend
           docker build -t coffeeshopbackend .
-          echo “$DOCKERHUB_PASSWORD” | docker login -u “$DOCKERHUB_USERNAME” — password-stdin
+          
           docker image tag coffeeshopbackend:latest lnguoxun/coffeeshopbackend:coffeeshopbackend_v1.1
           docker push lnguoxun/coffeeshopbackend:coffeeshopbackend_v1.1
 
@@ -129,16 +129,6 @@ jobs:
 workflows:
   default:
     jobs:
-      - lint-frontend
-      - lint-backend
-      - build-backend:
-          requires: [lint-backend]
-      - build-frontend:
-          requires: [lint-frontend]
-      - deploy-backend-EKS:
-          requires: [build-backend]
-      - deploy-frontend-EKS:
-          requires: [build-frontend]
-      - smoke-test:
-          requires: [deploy-backend-EKS, deploy-frontend-EKS]
+      - build-backend
+     
  
