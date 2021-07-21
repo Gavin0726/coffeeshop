@@ -40,8 +40,8 @@ jobs:
       - run: |
           cd backend
           docker build -t coffeeshopbackend .
-          
           docker image tag coffeeshopbackend:latest lnguoxun/coffeeshopbackend:coffeeshopbackend_v1.1
+          docker login -e lnguoxun@hotmail.com -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
           docker push lnguoxun/coffeeshopbackend:coffeeshopbackend_v1.1
 
   build-frontend:
