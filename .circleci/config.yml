@@ -122,6 +122,15 @@ jobs:
 workflows:
   default:
     jobs:
-      - deploy-backend-EKS
-     
- 
+      - lint-frontend
+      - lint-backend
+      - build-backend:
+          requires: [lint-backend]
+      - build-frontend:
+          requires: [lint-frontend]
+      - deploy-backend-EKS:
+          requires: [build-backend]
+      - deploy-frontend-EKS:
+          requires: [build-frontend]
+      - smoke-test:
+          requires: [deploy-backend-EKS, deploy-frontend-EKS]
