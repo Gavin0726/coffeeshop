@@ -39,8 +39,10 @@ jobs:
       - checkout
       - run: |
           cd backend
-          sh run_docker.sh
-          sh upload_docker.sh
+          docker build -t coffeeshopbackend .
+          echo “$DOCKERHUB_PASSWORD” | docker login -u “$DOCKERHUB_USERNAME” — password-stdin
+          docker image tag coffeeshopbackend:latest lnguoxun/coffeeshopbackend:coffeeshopbackend_v1.1
+          docker push lnguoxun/coffeeshopbackend:coffeeshopbackend_v1.1
 
   build-frontend:
     machine: true
@@ -48,8 +50,10 @@ jobs:
       - checkout
       - run: |
           cd frontend
-          sh run_docker.sh
-          sh upload_docker.sh
+          docker build -t coffeeshopfrontend .
+          echo “$DOCKERHUB_PASSWORD” | docker login -u “$DOCKERHUB_USERNAME” — password-stdin
+          docker image tag coffeeshopfrontend:latest lnguoxun/coffeeshopfrontend:coffeeshopfrontend_v2.3
+          docker push lnguoxun/coffeeshopfrontend:coffeeshopfrontend_v2.3
 
   deploy-backend-EKS:
     executor: aws-cli/default
