@@ -15,5 +15,5 @@ RUN pip install --upgrade --no-cache-dir pip &&\
 EXPOSE 5000
 
 # Run app.py at container launch
-WORKDIR src
+WORKDIR /app/src
 CMD ["python", "app.py"]

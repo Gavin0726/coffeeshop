@@ -1,0 +1,121 @@
+version: 2.1
+
+orbs:
+  aws-cli: circleci/aws-cli@2.0.3
+
+jobs:     
+  lint-frontend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - run:
+          name: lint front-end
+          command: |
+            cd frontend
+            npm run lint       
+
+  lint-backend:
+    docker:
+      - image: python:3.7.3-stretch
+    steps:
+      - checkout
+      - run:
+          name: lint back-end
+          command: |
+            cd backend
+            python3 -m venv venv
+            . venv/bin/activate
+            make install
+            make lint
+
+  deploy-backend-EKS:
+    executor: aws-cli/default
+    steps:
+      - checkout
+      - aws-cli/setup
+      - run: 
+          name: install kubctl
+          command: |
+            curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.20.4/2021-04-12/bin/linux/amd64/kubectl
+            chmod +x ./kubectl
+            mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+            kubectl version --short --client
+      
+      - run:
+          name: Build and Push image to repo  
+          command: |
+              cd backend
+              sh run_docker.sh
+              sh upload_docker.sh
+
+      - run: 
+          name: Deploy
+          command: |
+              aws eks --region us-west-2 update-kubeconfig --name CoffeeshopEKS-hnefarjDgpTQ
+              cd k8s_yml/deployment
+              kubectl apply -f flask_api.yml
+              kubectl get services
+              kubectl get nodes -o wide
+
+  deploy-frontend-EKS:
+    executor: aws-cli/default
+    steps:
+      - checkout
+      - aws-cli/setup
+      - run: 
+          name: install kubctl
+          command: |
+            curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.20.4/2021-04-12/bin/linux/amd64/kubectl
+            chmod +x ./kubectl
+            mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+            kubectl version --short --client
+      
+      - run:
+          name: Build and Push image to repo  
+          command: |
+              cd backend
+              sh run_docker.sh
+              sh upload_docker.sh
+
+      - run: 
+          name: Deploy
+          command: |
+              aws eks --region us-west-2 update-kubeconfig --name CoffeeshopEKS-hnefarjDgpTQ
+              cd k8s_yml/deployment
+              kubectl apply -f frontend.yml
+              kubectl get services
+              kubectl get nodes -o wide
+            
+  smoke-test:
+    docker:
+      - image: python:3.7-alpine3.11 
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update curl
+            pip install awscli
+      - run:
+          name: Backend smoke test
+          command: |
+            curl -s http://a10c0040a80a34e79b18528824d77a5a-882124262.us-east-1.elb.amazonaws.com/drinks
+      - run:
+          name: Frontend smoke test.
+          command: | 
+            curl -s http://a7dbc7ee8db49478cbf6f134b3ecef23-2109055788.us-east-1.elb.amazonaws.com | grep "Ionic App"
+
+
+workflows:
+  default:
+    jobs:
+      - lint-frontend
+      - lint-backend
+      - deploy-backend-EKS:
+          requires: [lint-frontend]
+      - deploy-frontend-EKS:
+          requires: [lint-backend]
+      - smoke-test:
+          requires: [deploy-backend-EKS, deploy-frontend-EKS]
+ 

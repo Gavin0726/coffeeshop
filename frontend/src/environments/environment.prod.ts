@@ -6,6 +6,6 @@ export const environment = {
     url: 'gavinguo.au', // the auth0 domain prefix
     audience: 'coffeeshop', // the audience set for the auth0 app
     clientId: 'bqSGYXo9iNZqfKFzKQNA0O5ZHDWFjpSq', // the client id generated for the auth0 app
-    callbackURL: 'http://a7dbc7ee8db49478cbf6f134b3ecef23-2109055788.us-east-1.elb.amazonaws.com', // the base url of the running ionic application. 
+    callbackURL: 'http://a7dbc7ee8db49478cbf6f134b3ecef23-2109055788.us-east-1.elb.amazonaws.com',
   }
 };
