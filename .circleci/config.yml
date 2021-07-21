@@ -71,7 +71,7 @@ jobs:
       - run: 
           name: Deploy
           command: |
-              aws eks --region us-west-2 update-kubeconfig --name CoffeeshopEKS-hnefarjDgpTQ
+              aws eks --region us-east-1 update-kubeconfig --name CoffeeshopEKS-hnefarjDgpTQ
               cd k8s_yml/deployment
               kubectl apply -f flask_api.yml
               kubectl get services
@@ -93,7 +93,7 @@ jobs:
       - run: 
           name: Deploy
           command: |
-              aws eks --region us-west-2 update-kubeconfig --name CoffeeshopEKS-hnefarjDgpTQ
+              aws eks --region us-east-1 update-kubeconfig --name CoffeeshopEKS-hnefarjDgpTQ
               cd k8s_yml/deployment
               kubectl apply -f frontend.yml
               kubectl get services
