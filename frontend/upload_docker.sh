@@ -5,13 +5,13 @@
 
 # Step 1:
 # Create dockerpath
-dockerpath="lnguoxun/coffeeshopbackend"
+dockerpath="lnguoxun/coffeeshopfrontend"
 
 # Step 2:  
 # Authenticate & tag
 echo "Docker ID and Image: $dockerpath"
-docker image tag coffeeshopbackend:latest $dockerpath:coffeeshopbackend_v1.1
+docker image tag coffeeshopfrontend:latest $dockerpath:coffeeshopfrontend_v2.3
 docker login --username lnguoxun
 # Step 3:
 # Push image to a docker repository
-docker push $dockerpath:coffeeshopbackend_v1.1
+docker push $dockerpath:coffeeshopfrontend_v2.3
